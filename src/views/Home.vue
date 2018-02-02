@@ -1,24 +1,18 @@
 <template>
-    <my-page title="SVG 转换器 - SVG to HTML5 Canvas Converter">
-        
-        <div class="row">
-            <div class="col-sm-12">
-                <h1 class="convert-title">SVG 转 Canvas 转换器</h1>
-                <!--<a href="https://github.com/gabelerner/canvg">canvg.js</a>-->
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
+    <my-page title="SVG 转 Canvas 转换器">
+        <ui-row gutter>
+            <ui-col width="100" tablet="100" desktop="50">
                 <div class="canvas-box">
-                    <canvas class="canvas" id="canvas"></canvas>
+                    <h1 class="convert-title"></h1>
+                    <canvas class="canvas" id="canvas" width="100%"></canvas>
                     <div id="dropMessage">拖拽 SVG 文件到这里</div>
                 </div>
-            </div>
-            <div class="col-sm-6">
+            </ui-col>
+            <ui-col width="100" tablet="100" desktop="50">
                 <textarea class="code" id="code" spellcheck='false' placeholder="转换代码"></textarea>
                 <div id="page"></div>
-            </div>
-        </div>
+            </ui-col>
+        </ui-row>
     </my-page>
 </template>
 
@@ -41,13 +35,13 @@
                 var canvas = document.getElementById('canvas');
                 var left = document.getElementById('left');
                 var dropMessage = document.getElementById('dropMessage');
-                var g = canvas.g = canvas.getContext('2d');
+                var ctx = canvas.g = canvas.getContext('2d');
 
-                var backingStoreRatio = g.webkitBackingStorePixelRatio ||
-                    g.mozBackingStorePixelRatio ||
-                    g.msBackingStorePixelRatio ||
-                    g.oBackingStorePixelRatio ||
-                    g.backingStorePixelRatio || 1;
+                var backingStoreRatio = ctx.webkitBackingStorePixelRatio ||
+                    ctx.mozBackingStorePixelRatio ||
+                    ctx.msBackingStorePixelRatio ||
+                    ctx.oBackingStorePixelRatio ||
+                    ctx.backingStorePixelRatio || 1;
                 var ratio = (window.devicePixelRatio || 1) / backingStoreRatio;
 
                 function setSize(width, height, canvas) {
@@ -104,10 +98,10 @@
                 var completedImageCount = 0;
 
                 function drawCanvas() {
-                    g.save();
-                    g.scale(ratio, ratio);
-                    g.drawImage(this, this.x, this.y);
-                    g.restore();
+                    ctx.save();
+                    ctx.scale(ratio, ratio);
+                    ctx.drawImage(this, this.x, this.y);
+                    ctx.restore();
 
                     this.parentNode.removeChild(this);
                 }
@@ -147,11 +141,11 @@
 
                     setSize(width, height);
 
-                    g.save();
-                    g.scale(ratio, ratio);
+                    ctx.save();
+                    ctx.scale(ratio, ratio);
 
-                    g.fillText('draw SVG by image', width * 0.1, 20);
-                    g.fillText('draw SVG by canvg.js', width * 0.6, 20);
+                    ctx.fillText('draw SVG by image', width * 0.1, 20);
+                    ctx.fillText('draw SVG by canvg.js', width * 0.6, 20);
 
                     y += 30;
 
@@ -164,11 +158,11 @@
                         var w = image.width;
                         var h = image.height;
 
-                        g.drawImage(image, x, y, w, h);
+                        ctx.drawImage(image, x, y, w, h);
                         drawSVGImageByCanvg(image, x + width / 2, y);
                         y += gap + image.height;
                     }
-                    g.restore();
+                    ctx.restore();
                 }
                 canvas.ondrop = function (e) {
                     this.style.background = '';
@@ -222,6 +216,7 @@
         position: relative;
     }
     .canvas {
+        width: 100%;
         height: 500px;
         background-color: #EEE;
         overflow-x: hidden;
