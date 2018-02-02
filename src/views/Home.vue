@@ -45,6 +45,7 @@
                 var ratio = (window.devicePixelRatio || 1) / backingStoreRatio;
 
                 function setSize(width, height, canvas) {
+                    console.log('设置大小')
                     canvas = canvas || window.canvas;
                     canvas.width = width * ratio;
                     canvas.height = height * ratio;
@@ -52,14 +53,15 @@
                     canvas.style.height = height + 'px';
                 }
 
-                setSize(canvas.parentNode.clientWidth, canvas.parentNode.clientHeight - 6);
+                setTimeout(() => {
+                    setSize(canvas.parentNode.clientWidth, canvas.parentNode.clientHeight - 6);
+                }, 20)
 
                 function drawSVGImageByCanvg(img, x, y) {
                     var tempCanvas = document.createElement('canvas');
                     tempCanvas.name = img.name;
                     tempCanvas.x = x;
                     tempCanvas.y = y;
-//        setSize(img.width, img.height, tempCanvas);
                     tempCanvas.width = img.width;
                     tempCanvas.height = img.height;
                     tempCanvas.style.zIndex = -1;
